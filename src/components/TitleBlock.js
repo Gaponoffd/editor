@@ -1,18 +1,8 @@
-function TitleBlock (props) {
+import React from 'react';
 
-  let initialStyle = {
-    fontSize: "24px",
-    fontWeight: 700,
-    color: "#000",
-    width: "100%",
-    textAlign: "center"
-  }
-
-  let initialText = "Заголовок"
-
+export default function TitleBlock (props) {
   return (
-    <div contenteditable="true" style={initialStyle}>{initialText}</div>
+    <textarea style={props.block.style}>{props.block.content}</textarea>
   )
 }
   
-export default TitleBlock;

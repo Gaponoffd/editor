@@ -3,14 +3,14 @@ import TitleBlock from "./TitleBlock";
 
 function EditorBlock (props) {
   return (
-    <div class="editor-block" id={props.block.key} >
-      <div class="delete-block-wrap" >
-        <button class="delete-block" >
+    <div className="editor-block" key={props.block.id} >
+      <div className="delete-block-wrap" >
+        <button className="delete-block" >
           <img src="./images/icons/delete.png" alt="delete" />
         </button>
       </div>
-      <div class="place" >
-        <TitleBlock />
+      <div className="place" >
+        <TitleBlock block={props.block} />
       </div>
     </div>
   )
