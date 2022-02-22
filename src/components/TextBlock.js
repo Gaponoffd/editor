@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import Context from '../context';
 
-export default function TextBlock ({block, editsText}) {
-
+export default function TextBlock ({block}) {
+  const {editsText} = useContext(Context)
   let [text, setText] = React.useState(block.content) 
 
-  function changeText(event) {
-    setText(event.target.value);
-
-    editsText(block.id, event.target.value)
-  }
-
   return (
-    <textarea style={block.style} value={text} onChange={event =>{changeText(event)}} ></textarea>
+    <textarea 
+      style={block.style} 
+      value={text} 
+      onChange={event =>{
+        setText(event.target.value);
+        editsText(block.id, event.target.value)
+      }} 
+    ></textarea>
   )
 }
   

@@ -4,6 +4,7 @@ import './style/main'
 import React from 'react';
 import Navbar from './components/Navbar'
 import EditorBlock from './components/EditorBlock'
+import Context from './context';
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
     switch (type) {
       case 'title':
         typeBlock = {
-          id: new Date().getMilliseconds(),
+          id: Date.now(),
           name: 'title',
           style: {fontSize: '24px', minHeight:'50px', color:'#000', width:"100%", textAlign: "center", fontWeight: 700},
           content: "Заголовок"
@@ -24,7 +25,7 @@ function App() {
         break;
       case 'text':
         typeBlock = {
-          id: new Date().getMilliseconds(),
+          id: Date.now(),
           name: 'text',
           style: {fontSize: '16px', minHeight:'350px', color:'#000', width:"100%", textAlign: "left"},
           content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu`
@@ -32,7 +33,7 @@ function App() {
         break;
       case 'image':
         typeBlock = {
-          id: new Date().getMilliseconds(),
+          id: Date.now(),
           name: "image",
           style: {position: 'relative', minHeight: '200px', 'width': '100%', display: "flex", alignItems: "center", justifyContent: "center"},
           image: './images/no-photo.png'
@@ -40,7 +41,7 @@ function App() {
         break;
       case 'background':
         typeBlock = {
-          id: new Date().getMilliseconds(),
+          id: Date.now(),
           name: "background",
           style: {
             position: 'relative',
@@ -76,41 +77,33 @@ function App() {
 
   function editsText(id, content) {
     setBlocks(
-      // eslint-disable-next-line array-callback-return
       blocks.map(block => {
-        console.log(block.id);
         if(block.id === id){
-          
           block.content = content;
-
-          return block
         }
+        return block
       })
       
     )
   }
 
   return (
-    <div className='wrapper'>
-
-      <h1>Редактор</h1>
-
-      {blocks.map(block => {
-        return (
-          <EditorBlock 
-            key={block.id} 
-            block={block} 
-            deleteBlock={deleteBlock} 
-            editsText={editsText} 
-          />
-        )
-      })}
-
-      <Navbar addBlock={addBlock} />
-
-      <button className="button-save" onClick={()=>{console.log(blocks)}}>Сохранить</button>
-      
-    </div>
+    <Context.Provider value={{editsText}}>
+      <div className='wrapper'>
+        <h1>Редактор</h1>
+        {blocks.map(block => {
+          return (
+            <EditorBlock 
+              key={block.id} 
+              block={block} 
+              deleteBlock={deleteBlock} 
+            />
+          )
+        })}
+        <Navbar addBlock={addBlock} />
+        <button className="button-save" onClick={()=>{console.log(blocks)}}>Сохранить</button>
+      </div>
+    </Context.Provider>
   );
 }
 
