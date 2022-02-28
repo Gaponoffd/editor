@@ -14,6 +14,8 @@ textarea
   font-weight: inherit
   font-family: inherit
   text-align: inherit
+  margin: 0
+  padding: 0
 
 #editor
   background: linear-gradient(0deg,#22acd5 0,#04ced0 100%)
@@ -55,8 +57,22 @@ textarea
     cursor: pointer
 
   .block-navbar
-    text-align: right
-
-  .delete-block
+    display: flex
+    justify-content: space-between
     margin: 20px 0 10px
-    cursor: pointer
+
+    button
+      cursor: pointer
+      margin: 0 2px
+      padding: 0
+      background: transparent
+      border: 1px solid
+      display: inline-flex
+      width: 30px
+      height: 30px
+      justify-content: center
+      align-items: center
+
+      svg
+        width: 20px
+        height: 20px

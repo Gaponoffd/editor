@@ -1,12 +1,15 @@
 
+import { initialBlock } from "../initialBlock";
+import { MdPhotoSizeSelectActual, MdPhotoCamera, MdOutlineTitle, MdOutlineTextFields } from "react-icons/md";
+
 function Navbar({addBlock}) {
   return (
     <nav className="navbar">
       <ul>
-        <li><button onClick={()=> {addBlock("background")}}><img src="./images/icons/background.png" alt="background" /></button></li>
-        <li><button onClick={()=> {addBlock("title")}} ><img src="./images/icons/title.png" alt="title" /></button></li>
-        <li><button onClick={()=> {addBlock("text")}}><img src="./images/icons/text.png" alt="text" /></button></li>
-        <li><button onClick={()=> {addBlock("image")}}><img src="./images/icons/image.png" alt="img" /></button></li>
+        <li><button onClick={()=> {addBlock(initialBlock.background)}}><MdPhotoSizeSelectActual /></button></li>
+        <li><button onClick={()=> {addBlock(initialBlock.image)}}><MdPhotoCamera /></button></li>
+        <li><button onClick={()=> {addBlock(initialBlock.title)}}><MdOutlineTitle /></button></li>
+        <li><button onClick={()=> {addBlock(initialBlock.text)}}><MdOutlineTextFields /></button></li>
       </ul>
     </nav>  
   )

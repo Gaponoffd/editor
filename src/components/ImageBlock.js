@@ -1,9 +1,21 @@
 import React from 'react';
 
-export default function ImageBlock (props) {
+import {MdDeleteOutline } from "react-icons/md";
+
+export default function ImageBlock ({block, deleteBlock}) {
   return (
-    <div  style={props.block.style}>
-      <img src={props.block.image} alt="nophoto" />
+    <div className="editor-block" id={block.id}>
+      <div className="block-navbar" >
+        <div className="position-block">
+
+        </div>
+        <button className="delete-block" onClick={ () => deleteBlock(block.id) }><MdDeleteOutline /></button>
+      </div>
+      <div className="place" >
+        <div  style={block.style}>
+          <img src={block.image} alt="nophoto" />
+        </div>
+      </div>
     </div>
   )
 }
