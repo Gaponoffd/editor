@@ -37,7 +37,7 @@ function App() {
     setBlocks(
       blocks.map(block => {
         if(block.id === id){
-          
+          block.style = style;
         }
         return block
       })
