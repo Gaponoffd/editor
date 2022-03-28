@@ -1,32 +1,24 @@
-import React, {useState, useContext} from 'react';
-import Context from '../context';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux'
+import { deleteBlock, editText, editStyle } from '../core/blockSlice'
 import { MdFormatAlignLeft, MdFormatAlignJustify, MdFormatAlignRight, MdDeleteOutline, MdColorLens, MdBlurOn } from "react-icons/md";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
-export default function TitleBlock ({block, deleteBlock}) {
-  const {editsText, editStyle} = useContext(Context)
+import { useDrag } from 'react-dnd'
+
+export default function TitleBlock ({block}) {
   const [text, setText] = useState(block.content);
-  const [styles, setStyles] = useState(block.style);
   const [toggler, setToggler] = useState(false);
   const [color, setColor] = useColor("hex", "#894040");
+  const dispatch = useDispatch();
 
-  function textDirection(direction) {
-    let newObj = {}
-    Object.assign(newObj, styles)
-    newObj.textAlign = direction;
-    setStyles(newObj);
-    editStyle(block.id, newObj)
-  }
-
-  function textColor(color) {
-    let newObj = {}
-    Object.assign(newObj, styles)
-    newObj.color = color.hex;
-    setColor(color);
-    setStyles(newObj);
-    editStyle(block.id, newObj);
-  }
+  const [{isDragging}, drag] = useDrag(() => ({
+    type: 'moveblock',
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }))
 
   return (
     <div className="editor-block" id={block.id}>
@@ -38,30 +30,34 @@ export default function TitleBlock ({block, deleteBlock}) {
             color={color}
             hideHSV
             dark
-            onChange={textColor}
-            />
+            onChange={color => {
+                setColor(color);
+                dispatch(editStyle([block.id, "color", color.hex]))
+              }
+            }
+          />
         </div>
         : ""
       }
       <div className="block-navbar" >
         <div className="position-block">
-          <button onClick={()=> textDirection('left')}><MdFormatAlignLeft/></button>
-          <button onClick={()=> textDirection('center')}><MdFormatAlignJustify/></button>
-          <button onClick={()=> textDirection('right')}><MdFormatAlignRight/></button>
+          <button onClick={() => {dispatch(editStyle([block.id, "textAlign", 'left']))}}><MdFormatAlignLeft/></button>
+          <button onClick={() => {dispatch(editStyle([block.id, "textAlign", 'center']))}}><MdFormatAlignJustify/></button>
+          <button onClick={() => {dispatch(editStyle([block.id, "textAlign", 'right']))}}><MdFormatAlignRight/></button>
           <button onClick={()=> setToggler(!toggler)}><MdColorLens/></button>
         </div>
         <div className="position-block">
-          <button className="delete-block" onClick={ () => deleteBlock(block.id) }><MdDeleteOutline /></button>
-          <button><MdBlurOn/></button>
+          <button className="delete-block" onClick={()=> dispatch(deleteBlock(block.id))}><MdDeleteOutline /></button>
+          <button ref={drag} style={{background: isDragging ? 'red' : 'transparent',}}><MdBlurOn/></button>
         </div>
       </div>
       <div className="place" >
         <textarea 
-          style={styles} 
+          style={block.style} 
           value={text} 
           onChange={event =>{
             setText(event.target.value);
-            editsText(block.id, event.target.value)
+            dispatch(editText([block.id, event.target.value]))
           }} 
         ></textarea>
       </div>

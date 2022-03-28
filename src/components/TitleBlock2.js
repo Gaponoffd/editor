@@ -9,7 +9,6 @@ export default function TitleBlock ({block}) {
   const [text, setText] = useState(block.content);
   const [toggler, setToggler] = useState(false);
   const [color, setColor] = useColor("hex", "#894040");
-
   const dispatch = useDispatch()
 
   return (
